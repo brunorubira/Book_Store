@@ -5,11 +5,13 @@ import { Book } from './models/bookModels.js';
 import booksRoutes from './routes/booksRoute.js'
 import cors from 'cors'
 
+
+
 const app = express();
 
-app.use(express.json())
-
 app.use(cors())
+
+app.use(express.json())
 
 app.use('/books', booksRoutes)
 
