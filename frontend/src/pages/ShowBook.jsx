@@ -5,9 +5,17 @@ import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 
 const ShowBook = () => {
-    const [book, setBook] = useState([]);
+
+    const [book, setBook] = useState({});
     const [loading, setLoading] = useState(false);
     const { id } = useParams()
+
+    // useEffect(() => {
+    //     console.log('Dados após setBook:', book);
+    //     console.log('book._id:', book._id);
+    //     console.log('book completo:', JSON.stringify(book, null, 2));
+    // }, [book]);
+
 
     useEffect(() => {
         setLoading(true);
@@ -15,15 +23,22 @@ const ShowBook = () => {
             .get(`http://localhost:5555/books/${id}`)
             .then((response) => {
 
-                console.log(response.data)
-                setBook(response.data);
-                setLoading(false);
+                const { data } = response;
+                const bookData = data.book ? data.book : data;
+                setBook(bookData);
+                setLoading(false)
+
+                // console.log(response.data)
+                // console.log(book)
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
             });
-    }, [id]); // Coloque um array vazio aqui
+    }, []); // Coloque um array vazio aqui
+
+    // console.log('Estado atualizado 2:', book)
+    console.log('Estado atualizado 2 com id:', book._id)
 
     return (
         <div className='p-4'>
@@ -55,12 +70,12 @@ const ShowBook = () => {
 
                     <div className='my-4'>
                         <span className='text-xl mr-4 text-gray-500'>Create Time</span>
-                        <span>{book.createdAt ? new Date(book.createdAt).toString() : 'N/A'}</span>
+                        <span>{book.createdAt}</span>
 
                     </div>
                     <div className='my-4'>
                         <span className='text-xl mr-4 text-gray-500'>Last Update Time</span>
-                        <span>{book.updatedAt ? new Date(book.updatedAt).toString() : 'N/A'}</span>
+                        <span>{book.updatedAt}</span>
 
                     </div>
 
@@ -69,5 +84,6 @@ const ShowBook = () => {
         </div>
     )
 }
+
 
 export default ShowBook
